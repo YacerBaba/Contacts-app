@@ -10,5 +10,6 @@ data class Contact (
     val photo : Bitmap?=null,
     val address :String? = null,
     val city:String? = null,
-    var favorite:Boolean = false
+    var favorite:Boolean = false,
+    var addedAt:String
 )

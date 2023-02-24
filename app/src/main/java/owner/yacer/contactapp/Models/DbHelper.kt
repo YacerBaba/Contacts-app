@@ -14,7 +14,7 @@ import java.io.ByteArrayOutputStream
 import java.util.*
 
 
-const val VERSION = 1
+
 const val TABLE_CONTACTS = "contacts"
 const val CONTACT_ID = "contact_id"
 const val CONTACT_FIRSTNAME = "first_name"
@@ -24,19 +24,24 @@ const val CONTACT_PHOTO = "profile_pic"
 const val CONTACT_ADDRESS = "address"
 const val CONTACT_CITY = "city"
 const val CONTACT_FAVORITE = "favorite"
+const val CONTACT_ADDED_AT = "added_at"
 
 class DbHelper(private val context: Context) :
-    SQLiteOpenHelper(context, "contactsApp.db", null, VERSION) {
+    SQLiteOpenHelper(context, "contactsApp.db", null,  2) {
     override fun onCreate(db: SQLiteDatabase?) {
         val createQuery =
             "create table $TABLE_CONTACTS ($CONTACT_ID integer primary key autoincrement,$CONTACT_FIRSTNAME text" +
                     ",$CONTACT_LASTNAME text not null,$CONTACT_PHONE text not null,$CONTACT_ADDRESS text" +
-                    ",$CONTACT_CITY text,$CONTACT_PHOTO blob not null ,$CONTACT_FAVORITE boolean not null);"
+                    ",$CONTACT_CITY text,$CONTACT_PHOTO blob not null ,$CONTACT_FAVORITE boolean not null" +
+                    ",$CONTACT_ADDED_AT text not null );"
         db!!.execSQL(createQuery)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
         db?.needUpgrade(newVersion)
+        if(oldVersion<newVersion){
+            db?.execSQL("alter table $TABLE_CONTACTS add column $CONTACT_ADDED_AT text default ''")
+        }
     }
 
     fun addContact(contact: Contact): Boolean {
@@ -52,6 +57,7 @@ class DbHelper(private val context: Context) :
         cv.put(CONTACT_CITY, contact.city)
         cv.put(CONTACT_PHOTO, photoByteArray)
         cv.put(CONTACT_FAVORITE,contact.favorite)
+        cv.put(CONTACT_ADDED_AT,contact.addedAt)
         val result = db.insert(TABLE_CONTACTS, null, cv)
         db.close()
         return result > 0
@@ -98,6 +104,7 @@ class DbHelper(private val context: Context) :
             val column_city = cursor.getColumnIndexOrThrow(CONTACT_CITY)
             val column_photo = cursor.getColumnIndexOrThrow(CONTACT_PHOTO)
             val column_favorite = cursor.getColumnIndexOrThrow(CONTACT_FAVORITE)
+            val column_addedAt = cursor.getColumnIndexOrThrow(CONTACT_ADDED_AT)
 
             val id = cursor.getIntOrNull(column_ID)
             val firstName = cursor.getString(column_firstName)
@@ -109,7 +116,8 @@ class DbHelper(private val context: Context) :
             val photo = BitmapFactory.decodeByteArray(photoByteArray, 0, photoByteArray.size)
             val favoriteInt = cursor.getInt(column_favorite)
             val fav = favoriteInt != 0
-            return Contact(id, firstName, lastName, phone, photo, address, city,fav)
+            val addedAt = cursor.getString(column_addedAt)
+            return Contact(id, firstName, lastName, phone, photo, address, city,fav,addedAt)
         }else{
             Log.e("msg","No Data found")
             return null
@@ -159,7 +167,7 @@ class DbHelper(private val context: Context) :
             val column_city = cursor.getColumnIndexOrThrow(CONTACT_CITY)
             val column_photo = cursor.getColumnIndexOrThrow(CONTACT_PHOTO)
             val column_favorite = cursor.getColumnIndexOrThrow(CONTACT_FAVORITE)
-
+            val cursor_addedAt = cursor.getColumnIndexOrThrow(CONTACT_ADDED_AT)
             do {
                 val id = cursor.getIntOrNull(column_ID)
                 val firstName = cursor.getString(column_firstName)
@@ -171,7 +179,8 @@ class DbHelper(private val context: Context) :
                 val photo = BitmapFactory.decodeByteArray(photoByteArray, 0, photoByteArray.size)
                 val favoriteInt = cursor.getInt(column_favorite)
                 val fav = favoriteInt != 0
-                val contact = Contact(id, firstName, lastName, phone, photo, address, city,fav)
+                val addedAt = cursor.getString(cursor_addedAt)
+                val contact = Contact(id, firstName, lastName, phone, photo, address, city,fav,addedAt)
                 list.add(contact)
             } while (cursor.moveToNext())
         } else {

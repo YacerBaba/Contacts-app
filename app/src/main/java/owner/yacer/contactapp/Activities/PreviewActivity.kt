@@ -1,12 +1,17 @@
 package owner.yacer.contactapp.Activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Rect
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
+import android.view.View
+import android.view.animation.AlphaAnimation
 import android.widget.PopupMenu
 import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_preview.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -18,12 +23,16 @@ import owner.yacer.contactapp.R
 
 class PreviewActivity : AppCompatActivity() {
     lateinit var dbHelper: DbHelper
+    lateinit var contact: Contact
+    @RequiresApi(Build.VERSION_CODES.M)
+    private var isTextViewVisible = true
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_preview)
         dbHelper = DbHelper(this)
         val contactID = getContactID()
-        val contact = getContactInformation(contactID)
+        contact = getContactInformation(contactID)
         bindContactToViews(contact)
         preview_addFavorite.setOnClickListener {
             val isFavorite =
@@ -66,6 +75,7 @@ class PreviewActivity : AppCompatActivity() {
                 it.putExtra("address", contact.address)
                 it.putExtra("city", contact.city)
                 it.putExtra("favorite", contact.favorite)
+                it.putExtra("addedAt",contact.addedAt)
                 startActivity(it)
                 overridePendingTransition(
                     androidx.appcompat.R.anim.abc_slide_in_bottom,
@@ -84,7 +94,7 @@ class PreviewActivity : AppCompatActivity() {
                         if (result) Toast.makeText(this, "1 Contact deleted", Toast.LENGTH_SHORT)
                             .show()
                         CoroutineScope(Dispatchers.Main).launch {
-                            delay(1000)
+                            delay(200)
                             finish()
                         }
                         true
@@ -126,6 +136,64 @@ class PreviewActivity : AppCompatActivity() {
             finish()
         }
 
+        preview_scrollView.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+            val textViewRect = Rect()
+            val isVisible= (preview_tv_contactName.getGlobalVisibleRect(textViewRect))
+
+            if (!isVisible && isTextViewVisible) {
+                // if the textView is not visible , show the app bar
+                val fadeInAnimation = AlphaAnimation(0.0f, 1.0f).apply {
+                    duration = 200
+                }
+                appBar_tb_contactName.text = preview_tv_contactName.text.toString()
+                appBar_tb_contactName.visibility = View.VISIBLE
+                appBar_tb_contactName.startAnimation(fadeInAnimation)
+                isTextViewVisible = false
+            }else if (isVisible && !isTextViewVisible) {
+                // if the textView is visible , hide the app bar
+                val fadeOutAnimation = AlphaAnimation(1.0f, 0.0f).apply {
+                    duration = 150
+                }
+                isTextViewVisible = true
+                appBar_tb_contactName.visibility = View.GONE
+                appBar_tb_contactName.startAnimation(fadeOutAnimation)
+            }
+
+
+        }
+
+        cardView_call.setOnClickListener {
+
+        }
+        cardView_call.setOnLongClickListener {
+            true
+        }
+
+        cardView_callViber.setOnClickListener {
+
+        }
+
+        cardView_msgWhatsapp.setOnClickListener {
+
+        }
+        cardView_callWhatsapp.setOnClickListener {
+
+        }
+        cardView_videoCallWhatsapp.setOnClickListener {
+
+        }
+
+        cardView_msgTelegram.setOnClickListener {
+
+        }
+        cardView_callTelegram.setOnClickListener {
+
+        }
+        cardView_videoCallTelegram.setOnClickListener {
+
+        }
+
+
     }
 
     private fun bindContactToViews(contact: Contact) {
@@ -137,7 +205,16 @@ class PreviewActivity : AppCompatActivity() {
             ContextCompat.getDrawable(this,R.drawable.ic_star_24)
         }
         preview_iv_contactPhoto.setImageBitmap(contact.photo)
+        preview_tv_addedAt.text = "Added at ${contact.addedAt}"
 
+        cv_tv_phone.text = contact.phone
+        cv_tv_viberPhone.text = "(+213 ${contact.phone.toLong()})"
+        cv_tv_whatsAppMsgPhone.text = "+213 ${contact.phone.toLong()}"
+        cv_tv_whatsAppVideoPhone.text = "+213 ${contact.phone.toLong()}"
+        cv_tv_whatsAppVoicePhone.text = "+213 ${contact.phone.toLong()}"
+        cv_tv_telegramMsgPhone.text = "+213 ${contact.phone.toLong()}"
+        cv_tv_telegramVoicePhone.text = "+213 ${contact.phone.toLong()}"
+        cv_tv_telegramVideoPhone.text = "+213 ${contact.phone.toLong()}"
     }
 
     private fun sendMessage(contact: Contact) {
@@ -162,5 +239,11 @@ class PreviewActivity : AppCompatActivity() {
         overridePendingTransition(
             android.R.anim.slide_in_left,android.R.anim.slide_out_right
         )
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val contact = getContactInformation(contact.id!!)
+        bindContactToViews(contact)
     }
 }

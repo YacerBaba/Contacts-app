@@ -31,7 +31,17 @@
                 android:background="@drawable/ic_cancel_svgrepo_com" />
         </FrameLayout>
 
-
+        <TextView
+            android:id="@+id/appBar_tb_contactName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Yacer Babaouamer"
+            android:textSize="17dp"
+            android:textColor="@color/black"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/roboto_regular"
+            android:visibility="gone"
+            />
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -81,13 +91,16 @@
     </LinearLayout>
 
     <ScrollView
+        android:id="@+id/preview_scrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintVertical_bias="0.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -215,11 +228,14 @@
 
             <TextView
                 android:id="@+id/preview_tv_contactName"
-                android:layout_width="wrap_content"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
                 android:layout_marginBottom="20dp"
+                android:ellipsize="end"
                 android:fontFamily="@font/roboto_regular"
+                android:gravity="center_horizontal"
+                android:maxLines="2"
                 android:text="Yacer Babaouamer"
                 android:textColor="@color/black"
                 android:textSize="24dp"
@@ -239,7 +255,7 @@
                 android:padding="10dp"
                 app:cardCornerRadius="15dp"
                 app:cardElevation="5dp"
-                app:layout_constraintBottom_toTopOf="@id/textView"
+                app:layout_constraintBottom_toTopOf="@id/preview_tv_addedAt"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
@@ -274,7 +290,7 @@
                             android:background="@drawable/ic_call_24" />
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="100dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
                             android:fontFamily="@font/roboto_light"
@@ -284,9 +300,9 @@
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/cv_tv_phone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="20dp"
                             android:fontFamily="@font/roboto_light"
                             android:text="0674947412"
                             android:textColor="@color/black"
@@ -295,7 +311,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/cardView_callWhatsapp"
+                        android:id="@+id/cardView_callViber"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_marginTop="5dp"
@@ -318,6 +334,7 @@
                             android:textSize="17sp" />
 
                         <TextView
+                            android:id="@+id/cv_tv_viberPhone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/roboto_regular"
@@ -327,7 +344,7 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/cardView_callViber"
+                        android:id="@+id/cardView_msgWhatsapp"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_marginTop="5dp"
@@ -341,17 +358,26 @@
                             android:background="@drawable/ic_whatsapp_svgrepo_com" />
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="100dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
                             android:fontFamily="@font/roboto_regular"
-                            android:text="Mobile : 0674947412"
+                            android:text="Message    "
+                            android:textColor="@color/black"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:id="@+id/cv_tv_whatsAppMsgPhone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_regular"
+                            android:text="+213 674947412"
                             android:textColor="@color/black"
                             android:textSize="17sp" />
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/cardView_callViber"
+                        android:id="@+id/cardView_callWhatsapp"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_marginTop="5dp"
@@ -365,17 +391,26 @@
                             android:background="@drawable/ic_whatsapp_svgrepo_com" />
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="100dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
                             android:fontFamily="@font/roboto_regular"
-                            android:text="Mobile : 0674947412"
+                            android:text="Voice Call  "
+                            android:textColor="@color/black"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:id="@+id/cv_tv_whatsAppVoicePhone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_regular"
+                            android:text="+213 674947412"
                             android:textColor="@color/black"
                             android:textSize="17sp" />
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/cardView_callViber"
+                        android:id="@+id/cardView_videoCallWhatsapp"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_marginTop="5dp"
@@ -389,15 +424,57 @@
                             android:background="@drawable/ic_whatsapp_svgrepo_com" />
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="100dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
                             android:fontFamily="@font/roboto_regular"
-                            android:text="Mobile : 0674947412"
+                            android:text="Video Call  "
+                            android:textColor="@color/black"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:id="@+id/cv_tv_whatsAppVideoPhone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_regular"
+                            android:text="+213 674947412"
                             android:textColor="@color/black"
                             android:textSize="17sp" />
                     </LinearLayout>
 
+
+                    <LinearLayout
+                        android:id="@+id/cardView_msgTelegram"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="5dp"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_marginStart="10dp"
+                            android:background="@drawable/ic_telegram_svgrepo_com" />
+
+                        <TextView
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:fontFamily="@font/roboto_regular"
+                            android:text="Message    "
+                            android:textColor="@color/black"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:id="@+id/cv_tv_telegramMsgPhone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_regular"
+                            android:text="+213 674947412"
+                            android:textColor="@color/black"
+                            android:textSize="17sp" />
+                    </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/cardView_callTelegram"
@@ -414,17 +491,27 @@
                             android:background="@drawable/ic_telegram_svgrepo_com" />
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="100dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
                             android:fontFamily="@font/roboto_regular"
-                            android:text="Mobile : 0674947412"
+                            android:text="Voice Call  "
                             android:textColor="@color/black"
                             android:textSize="17sp" />
+
+                        <TextView
+                            android:id="@+id/cv_tv_telegramVoicePhone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_regular"
+                            android:text="+213 674947412"
+                            android:textColor="@color/black"
+                            android:textSize="17sp" />
+
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/cardView_callTelegram"
+                        android:id="@+id/cardView_videoCallTelegram"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_marginTop="5dp"
@@ -438,35 +525,20 @@
                             android:background="@drawable/ic_telegram_svgrepo_com" />
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="100dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
                             android:fontFamily="@font/roboto_regular"
-                            android:text="Mobile : 0674947412"
+                            android:text="Video Call  "
                             android:textColor="@color/black"
                             android:textSize="17sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/cardView_callTelegram"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:layout_marginTop="5dp"
-                        android:foreground="?attr/selectableItemBackground"
-                        android:gravity="center_vertical">
-
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_marginStart="10dp"
-                            android:background="@drawable/ic_telegram_svgrepo_com" />
 
                         <TextView
+                            android:id="@+id/cv_tv_telegramVideoPhone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="20dp"
                             android:fontFamily="@font/roboto_regular"
-                            android:text="Mobile : 0674947412"
+                            android:text="+213 674947412"
                             android:textColor="@color/black"
                             android:textSize="17sp" />
                     </LinearLayout>
@@ -474,12 +546,13 @@
             </androidx.cardview.widget.CardView>
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/preview_tv_addedAt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:layout_marginBottom="52dp"
-                android:text="TextView"
+                android:layout_marginBottom="50dp"
+                android:text="Added at Apr ,9 2021"
+                android:textSize="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"

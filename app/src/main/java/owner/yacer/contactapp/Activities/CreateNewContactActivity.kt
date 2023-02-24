@@ -2,17 +2,18 @@ package owner.yacer.contactapp.Activities
 
 import android.content.Intent
 import android.graphics.*
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextPaint
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_create_new_contact_activty.*
 import owner.yacer.contactapp.Models.Contact
 import owner.yacer.contactapp.Models.DbHelper
 import owner.yacer.contactapp.R
+import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.random.Random
+import java.util.Collections.shuffle
 
 const val REQUEST_CODE = 1
 
@@ -28,13 +29,18 @@ class CreateNewContactActivity : AppCompatActivity() {
         createAct_btn_save.setOnClickListener {
             var address:String? = null
             var city:String? = null
-            if(createAct_et_contactFirstName.editText!!.text.toString().isEmpty()){
+            if(createAct_et_contactFirstName.editText!!.text.toString().trim().isEmpty()){
                 createAct_et_contactFirstName.error = "Enter the first name"
                 createAct_et_contactFirstName.requestFocus()
                 return@setOnClickListener
             }
-            if(createAct_et_contactPhone.editText!!.text.toString().isEmpty()){
+            if(createAct_et_contactPhone.editText!!.text.toString().trim().isEmpty() ){
                 createAct_et_contactPhone.error = "Enter the phone number"
+                createAct_et_contactPhone.requestFocus()
+                return@setOnClickListener
+            }
+            if(createAct_et_contactPhone.editText!!.text.toString().toDoubleOrNull() == null ){
+                createAct_et_contactPhone.error = "Enter a valid phone number"
                 createAct_et_contactPhone.requestFocus()
                 return@setOnClickListener
             }
@@ -44,14 +50,17 @@ class CreateNewContactActivity : AppCompatActivity() {
             if(createAct_et_contactCity.editText!!.text.toString().isNotEmpty()){
                 city = createAct_et_contactCity.editText!!.text.toString()
             }
-            val firstName = createAct_et_contactFirstName.editText!!.text.toString()
-            val lastName = createAct_et_contactLastName.editText!!.text.toString()
-            val phone  = createAct_et_contactPhone.editText!!.text.toString()
+            val firstName = createAct_et_contactFirstName.editText!!.text.toString().trim()
+            val lastName = createAct_et_contactLastName.editText!!.text.toString().trim()
+            val phone  = createAct_et_contactPhone.editText!!.text.toString().trim()
 
             if(imageBitmap==null){
                 imageBitmap = generateProfilePicture(firstName)
             }
-            val contact = Contact(-1,firstName,lastName,phone,imageBitmap,address, city)
+            val date = Date()
+            val format = SimpleDateFormat("MMM, d yyyy", Locale.getDefault())
+            val addedAt = format.format(date)
+            val contact = Contact(-1,firstName,lastName,phone,imageBitmap,address, city, addedAt = addedAt)
             val success = dbHelper.addContact(contact)
             if(success){
                 Toast.makeText(this,"Contact added successfully",Toast.LENGTH_SHORT).show()
@@ -77,9 +86,10 @@ class CreateNewContactActivity : AppCompatActivity() {
         val bitmap = Bitmap.createBitmap(256, 256, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
         // choose random color
-        val colors = arrayOf("#ffbe0b", "#fb5607", "#ff006e", "#8338ec", "#3a86ff","#90e0ef","#ffb4a2",
+        val colors = listOf("#ffbe0b", "#fb5607", "#ff006e", "#8338ec", "#3a86ff","#90e0ef","#ffb4a2",
             "#168aad","#8ac926")
-        val random = java.util.Random()
+        shuffle(colors)
+        val random = Random()
         val randomColor = colors[random.nextInt(colors.size)]
         // Draw background color
         canvas.drawColor(Color.parseColor(randomColor))
