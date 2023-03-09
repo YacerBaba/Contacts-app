@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/contact_cardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="5dp"
+    android:layout_marginEnd="5dp"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="0dp"
+    android:foreground="?attr/selectableItemBackground"
+
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="8dp"
+        >
+        <!-- Img , name , phone and call -->
+        <LinearLayout
+            android:id="@+id/layout_main"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:animateLayoutChanges="true"
+            >
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/contact_photo"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="35dp"
+                android:src="@mipmap/ic_launcher"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_vertical"
+                >
+                <TextView
+                    android:id="@+id/contact_fullName"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:text="Babaouamer yacer"
+                    android:layout_marginStart="30sp"
+                    android:textSize="18dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/roboto_light"
+                    android:textStyle="bold"
+                    />
+                <TextView
+                    android:id="@+id/contact_phoneNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mobile : 0674947412"
+                    android:layout_marginStart="30sp"
+                    android:textSize="16dp"
+                    android:textColor="#B4000000"
+                    android:fontFamily="@font/roboto_light"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    />
+
+            </LinearLayout>
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                />
+            <FrameLayout
+                android:id="@+id/btn_call"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="15dp"
+                android:layout_marginEnd="10dp"
+                android:foreground="@drawable/circular_ripple"
+                >
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/ic_call_24"
+                    />
+            </FrameLayout>
+
+        </LinearLayout>
+        <!-- expanded layout : view and more details btns... -->
+        <LinearLayout
+            android:id="@+id/layout_expanded"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            >
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:background="#2A000000"
+                />
+            <!-- send message -->
+            <LinearLayout
+                android:id="@+id/btn_sendMsg"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="5dp"
+                android:gravity="center_vertical"
+                android:background="?attr/selectableItemBackground"
+                >
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_chat_svgrepo_com"
+                    android:layout_marginStart="35dp"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Send a message"
+                    android:layout_marginStart="20dp"
+                    android:fontFamily="@font/roboto_light"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    />
+            </LinearLayout>
+
+            <!-- add to favorite -->
+
+            <LinearLayout
+                android:id="@+id/btn_addToFavorite"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:gravity="center_vertical"
+                android:background="?attr/selectableItemBackground"
+                >
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_star_24"
+                    android:layout_marginStart="35dp"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Add to favorite"
+                    android:layout_marginStart="20dp"
+                    android:fontFamily="@font/roboto_light"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+
+</androidx.cardview.widget.CardView>
