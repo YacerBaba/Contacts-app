@@ -1,60 +1,129 @@
 package owner.yacer.contactapp.Fragments
 
+import android.app.Activity
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
+import android.util.Log
+import android.view.KeyEvent
 import android.view.View
-import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_contact.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import owner.yacer.contactapp.Activities.CreateNewContactActivity
+import owner.yacer.contactapp.Activities.MainActivity
+import owner.yacer.contactapp.Models.CALL_REQUEST_CODE
+import owner.yacer.contactapp.Models.Contact
+import owner.yacer.contactapp.Models.ContactAdapter
+import owner.yacer.contactapp.Models.DbHelper
 import owner.yacer.contactapp.R
+import java.util.*
+import kotlin.system.measureTimeMillis
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ContactFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class ContactFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+class ContactFragment : Fragment(R.layout.fragment_contact) {
+    lateinit var adapter: ContactAdapter
+    lateinit var dbHelper: DbHelper
+    lateinit var observer: RecyclerView.AdapterDataObserver
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+        dbHelper = DbHelper(requireContext())
+
+        setUpContactRecyclerView()
+        floatingActionButton.setOnClickListener {
+            val fragment = DialPadFragment()
+            MainActivity.currentFragment = fragment
+            requireFragmentManager().beginTransaction().apply {
+                addToBackStack(ContactFragment::class.java.name)
+                replace(R.id.fl_fragment, fragment)
+                commit()
+                (activity as MainActivity).bottom_app_bar.visibility = View.GONE
+            }
+        }
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                val number = newText!!.toString().toDoubleOrNull()
+                if (number == null) {
+                    val filteredList = dbHelper.searchByName(newText)
+                    adapter.setFilteredList(filteredList)
+                } else {
+                    val filteredList = dbHelper.searchByPhoneNumber(newText)
+                    adapter.setFilteredList(filteredList)
+                }
+                return true
+            }
+
+        })
+
+
+        layout_addContact.setOnClickListener {
+            Intent(context, CreateNewContactActivity::class.java).also {
+                it.putExtra("fragment", 0)
+                startActivity(it)
+                (context as Activity).overridePendingTransition(
+                    R.anim.slide_in_right,
+                    R.anim.slide_out_left
+                )
+            }
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_contact, container, false)
+    private fun setUpContactRecyclerView() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val listContacts: LinkedList<Contact>
+            val time = measureTimeMillis {
+                listContacts = dbHelper.getContacts()
+            }
+            Log.e("msgTimeContact", "$time")
+            withContext(Dispatchers.Main) {
+                adapter = ContactAdapter(requireContext(), listContacts)
+                layout_noContacts.visibility = if(adapter.itemCount ==0) View.VISIBLE else View.GONE
+                observer = object : RecyclerView.AdapterDataObserver(){
+                    override fun onChanged() {
+                        super.onChanged()
+                        val count = adapter.itemCount
+                        layout_noContacts.visibility = if(count ==0) View.VISIBLE else View.GONE
+                    }
+                }
+                adapter.registerAdapterDataObserver(observer)
+                val layoutManager = LinearLayoutManager(requireContext())
+                main_rv_contacts.adapter = adapter
+                main_rv_contacts.layoutManager = layoutManager
+            }
+        }
+
+
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ContactFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ContactFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onResume() {
+        super.onResume()
+        setUpContactRecyclerView()
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == CALL_REQUEST_CODE && grantResults.isNotEmpty()
+            && grantResults[0] == PackageManager.PERMISSION_GRANTED
+        ) {
+
+        }
     }
 }

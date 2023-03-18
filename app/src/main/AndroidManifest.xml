@@ -3,6 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="owner.yacer.contactapp">
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,6 +18,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ContactApp"
         tools:targetApi="31">
+        <activity
+            android:name=".Activities.PreviewRecentContactActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.SelectActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.DialerActivity"
+            android:exported="false"
+            android:label="@string/title_activity_dialer"
+            android:theme="@style/Theme.ContactApp.NoActionBar" />
         <activity
             android:name=".Activities.PreviewActivity"
             android:exported="false" />

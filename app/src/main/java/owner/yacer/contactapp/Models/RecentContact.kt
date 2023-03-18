@@ -2,11 +2,11 @@ package owner.yacer.contactapp.Models
 
 import android.graphics.Bitmap
 
-data class RecentPerson(
-    var contactID:Int? = null,
+data class RecentContact(
     val fullName: String? = null,
     val phone: String? = null,
     val type: Int,
-    val date: String,
-    val img: Bitmap? = null
+    val date: Long,
+    val img: Bitmap? = null,
+    val rowid :Int? = 0
 )

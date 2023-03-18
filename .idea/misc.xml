@@ -4,25 +4,46 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/AndroidStudioProjects/Contactapp/app/src/main/res/drawable/bottom_app_focused.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProjects/Contactapp/app/src/main/res/drawable/btn_add_state.xml" value="0.109" />
+        <entry key="..\:/AndroidStudioProjects/Contactapp/app/src/main/res/drawable/bubble_structure.xml" value="0.1645" />
         <entry key="..\:/AndroidStudioProjects/Contactapp/app/src/main/res/drawable/circular_ripple.xml" value="0.1" />
         <entry key="..\:/AndroidStudioProjects/Contactapp/app/src/main/res/drawable/circular_ripple_exit.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProjects/Contactapp/app/src/main/res/drawable/fast_scroll_thumb.xml" value="0.1" />
         <entry key="..\:/AndroidStudioProjects/Contactapp/app/src/main/res/drawable/ic_call_24.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProjects/Contactapp/app/src/main/res/drawable/ic_call_missed_24.xml" value="0.109" />
         <entry key="..\:/AndroidStudioProjects/Contactapp/app/src/main/res/drawable/ic_call_outlined_blue_24.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProjects/Contactapp/app/src/main/res/drawable/ic_clock_focused.xml" value="0.109" />
         <entry key="..\:/AndroidStudioProjects/Contactapp/app/src/main/res/drawable/ic_clock_svgrepo_com.xml" value="0.1" />
         <entry key="..\:/AndroidStudioProjects/Contactapp/app/src/main/res/drawable/ic_comment_chat.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProjects/Contactapp/app/src/main/res/drawable/ic_contacts.xml" value="0.109" />
         <entry key="..\:/AndroidStudioProjects/Contactapp/app/src/main/res/drawable/ic_contacts_focus.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProjects/Contactapp/app/src/main/res/drawable/ic_contacts_outlined.xml" value="0.109" />
+        <entry key="..\:/AndroidStudioProjects/Contactapp/app/src/main/res/drawable/ic_dial_pad_svgrepo_com.xml" value="0.109" />
         <entry key="..\:/AndroidStudioProjects/Contactapp/app/src/main/res/drawable/ic_edit_24.xml" value="0.1" />
         <entry key="..\:/AndroidStudioProjects/Contactapp/app/src/main/res/drawable/ic_google_meet.xml" value="0.1" />
         <entry key="..\:/AndroidStudioProjects/Contactapp/app/src/main/res/drawable/ic_recent_svgrepo_com.xml" value="0.1" />
         <entry key="..\:/AndroidStudioProjects/Contactapp/app/src/main/res/drawable/ic_star_24.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProjects/Contactapp/app/src/main/res/drawable/ic_star_24_btm.xml" value="0.109" />
         <entry key="..\:/AndroidStudioProjects/Contactapp/app/src/main/res/drawable/ic_star_light_svgrepo_com.xml" value="0.1" />
         <entry key="..\:/AndroidStudioProjects/Contactapp/app/src/main/res/drawable/search_view_bg.xml" value="0.144" />
         <entry key="..\:/AndroidStudioProjects/Contactapp/app/src/main/res/layout/activity_create_new_contact_activty.xml" value="0.20052083333333334" />
+        <entry key="..\:/AndroidStudioProjects/Contactapp/app/src/main/res/layout/activity_dialer.xml" value="0.150390625" />
         <entry key="..\:/AndroidStudioProjects/Contactapp/app/src/main/res/layout/activity_edit_contact.xml" value="0.25" />
-        <entry key="..\:/AndroidStudioProjects/Contactapp/app/src/main/res/layout/activity_main.xml" value="0.2385368366821226" />
+        <entry key="..\:/AndroidStudioProjects/Contactapp/app/src/main/res/layout/activity_main.xml" value="0.150390625" />
         <entry key="..\:/AndroidStudioProjects/Contactapp/app/src/main/res/layout/activity_preview.xml" value="0.18" />
+        <entry key="..\:/AndroidStudioProjects/Contactapp/app/src/main/res/layout/activity_preview_recent_contact.xml" value="0.2385368366821226" />
+        <entry key="..\:/AndroidStudioProjects/Contactapp/app/src/main/res/layout/activity_preview_recent_contact2.xml" value="0.20052083333333334" />
+        <entry key="..\:/AndroidStudioProjects/Contactapp/app/src/main/res/layout/activity_select.xml" value="0.17938783417280124" />
         <entry key="..\:/AndroidStudioProjects/Contactapp/app/src/main/res/layout/contact_item.xml" value="0.150390625" />
+        <entry key="..\:/AndroidStudioProjects/Contactapp/app/src/main/res/layout/favorite_item.xml" value="0.149609375" />
+        <entry key="..\:/AndroidStudioProjects/Contactapp/app/src/main/res/layout/fragment_contact.xml" value="0.2385368366821226" />
+        <entry key="..\:/AndroidStudioProjects/Contactapp/app/src/main/res/layout/fragment_dial_pad.xml" value="0.2385368366821226" />
+        <entry key="..\:/AndroidStudioProjects/Contactapp/app/src/main/res/layout/fragment_favorite.xml" value="0.17938783417280124" />
+        <entry key="..\:/AndroidStudioProjects/Contactapp/app/src/main/res/layout/fragment_recent.xml" value="0.22" />
+        <entry key="..\:/AndroidStudioProjects/Contactapp/app/src/main/res/layout/recent_item.xml" value="0.150390625" />
+        <entry key="..\:/AndroidStudioProjects/Contactapp/app/src/main/res/layout/select_item.xml" value="0.150390625" />
         <entry key="..\:/AndroidStudioProjects/Contactapp/app/src/main/res/menu/more_menu.xml" value="0.20052083333333334" />
+        <entry key="..\:/AndroidStudioProjects/Contactapp/app/src/main/res/menu/recent_more_menu.xml" value="0.20052083333333334" />
       </map>
     </option>
   </component>
@@ -35,7 +56,7 @@
   <component name="VisualizationToolProject">
     <option name="state">
       <ProjectState>
-        <option name="scale" value="0.17938783417280124" />
+        <option name="scale" value="0.2385368366821226" />
       </ProjectState>
     </option>
   </component>

@@ -24,8 +24,12 @@ class CreateNewContactActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_new_contact_activty)
         dbHelper = DbHelper(this)
-
-
+        createAct_et_contactFirstName.requestFocus()
+        val isComingFromRecent = intent?.getIntExtra("fragment",-1)
+        if(isComingFromRecent ==1){
+            val phone = intent?.getStringExtra("phoneNumber")
+            createAct_et_contactPhone.editText!!.setText(phone)
+        }
         createAct_btn_save.setOnClickListener {
             var address:String? = null
             var city:String? = null
@@ -68,7 +72,6 @@ class CreateNewContactActivity : AppCompatActivity() {
             }else{
                 Toast.makeText(this,"something went wrong",Toast.LENGTH_SHORT).show()
             }
-
         }
 
         createAct_selectPicture.setOnClickListener {

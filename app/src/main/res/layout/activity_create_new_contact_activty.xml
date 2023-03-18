@@ -173,7 +173,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:imeOptions="actionNone"
-                android:inputType="textCapWords"
+                android:inputType="number"
                 android:selectAllOnFocus="true"
                 />
         </com.google.android.material.textfield.TextInputLayout>

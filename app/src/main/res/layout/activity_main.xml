@@ -7,6 +7,7 @@
     tools:context=".Activities.MainActivity"
     >
 
+
     <androidx.cardview.widget.CardView
         android:id="@+id/bottom_app_bar"
         android:layout_width="match_parent"
@@ -20,7 +21,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/nestedScrollView"
+        app:layout_constraintTop_toBottomOf="@id/fl_fragment"
+
         >
 
         <LinearLayout
@@ -41,23 +43,23 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="#F7F7F8"
-                android:foreground="?attr/selectableItemBackground"
                 android:gravity="center"
                 android:orientation="vertical"
-
                 >
 
                 <LinearLayout
+                    android:id="@+id/main_contact_bg"
                     android:layout_width="65dp"
-                    android:layout_height="26dp"
+                    android:layout_height="30dp"
                     android:background="@drawable/bottom_app_focused"
+                    android:foreground="@drawable/circular_ripple_exit"
                     android:gravity="center">
 
                     <ImageView
                         android:id="@+id/main_iv_contact"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@drawable/ic_contacts_focus"
+                        android:src="@drawable/ic_contacts_outlined"
 
                         />
                 </LinearLayout>
@@ -68,9 +70,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
-                    android:fontFamily="@font/roboto_medium"
+                    android:fontFamily="@font/roboto_regular"
                     android:text="Contacts"
-                    android:textColor="@color/black_grey"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -80,25 +83,29 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="#F7F7F8"
-                android:foreground="?attr/selectableItemBackground"
-
                 android:gravity="center"
                 android:orientation="vertical"
 
                 >
-
+                <LinearLayout
+                    android:id="@+id/main_recent_bg"
+                    android:layout_width="65dp"
+                    android:layout_height="30dp"
+                    android:background="@color/bottom_color"
+                    android:foreground="@drawable/circular_ripple_exit"
+                    android:gravity="center">
                 <ImageView
                     android:id="@+id/main_iv_recent"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/ic_clock_svgrepo_com" />
-
+                </LinearLayout>
                 <TextView
                     android:id="@+id/main_tv_recent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
-                    android:fontFamily="@font/roboto_medium"
+                    android:fontFamily="@font/roboto_regular"
                     android:text="Recent"
                     android:textColor="@color/black"
                     android:textSize="15dp" />
@@ -110,22 +117,29 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="#F7F7F8"
-                android:foreground="?attr/selectableItemBackground"
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/main_iv_favorite"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_star_24" />
+                <LinearLayout
+                    android:id="@+id/main_fav_bg"
+                    android:layout_width="65dp"
+                    android:layout_height="30dp"
+                    android:background="@color/bottom_color"
+                    android:foreground="@drawable/circular_ripple_exit"
+                    android:gravity="center">
 
+                    <ImageView
+                        android:id="@+id/main_iv_favorite"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_star_24_btm" />
+                </LinearLayout>
                 <TextView
                     android:id="@+id/main_tv_favorite"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
-                    android:fontFamily="@font/roboto_medium"
+                    android:fontFamily="@font/roboto_regular"
                     android:text="Favorite"
                     android:textColor="@color/black"
                     android:textSize="15dp" />
@@ -135,79 +149,17 @@
 
     </androidx.cardview.widget.CardView>
 
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/searchView"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="15dp"
-        android:background="@drawable/search_view_bg"
-        app:iconifiedByDefault="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:queryHint="Search contacts" />
-
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/nestedScrollView"
+    <FrameLayout
+        android:id="@+id/fl_fragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:fillViewport="true"
+        android:layout_marginBottom="1dp"
         app:layout_constraintBottom_toTopOf="@+id/bottom_app_bar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchView">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:layout_marginTop="10dp"
-            >
+    </FrameLayout>
 
-            <LinearLayout
-                android:id="@+id/layout_addContact"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginBottom="1dp"
-                android:foreground="?attr/selectableItemBackground"
-                android:gravity="center_vertical"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                app:layout_constraintBottom_toTopOf="@+id/main_rv_contacts"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    android:layout_marginStart="50dp"
-                    android:src="@drawable/add_person" />
-
-                <TextView
-                    android:id="@+id/tv_addNewContact"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="35dp"
-                    android:fontFamily="@font/roboto_light"
-                    android:text="@string/new_contact"
-                    android:textColor="@color/blue"
-                    android:textSize="20sp" />
-            </LinearLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/main_rv_contacts"
-                android:layout_width="409dp"
-                android:layout_height="534dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layout_addContact" />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

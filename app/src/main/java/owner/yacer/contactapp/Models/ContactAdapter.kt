@@ -4,23 +4,25 @@ package owner.yacer.contactapp.Models
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.contact_item.view.*
-import owner.yacer.contactapp.Activities.EditContactActivity
 import owner.yacer.contactapp.Activities.PreviewActivity
 import owner.yacer.contactapp.R
 import java.util.*
 
-
+const val CALL_REQUEST_CODE = 101
 class ContactAdapter(val context: Context, var listContacts: LinkedList<Contact>) :
     RecyclerView.Adapter<ContactAdapter.ContactViewHolder>() {
     private var isExpanded = false
@@ -45,6 +47,8 @@ class ContactAdapter(val context: Context, var listContacts: LinkedList<Contact>
         val btn_call = view.btn_call
         val btn_sendMsg = view.btn_sendMsg
         val btn_addToFavorite = view.btn_addToFavorite
+        val iv_fav = view.contact_iv_favorite
+        val tv_fav = view.contact_tv_favorite
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactViewHolder {
@@ -57,8 +61,16 @@ class ContactAdapter(val context: Context, var listContacts: LinkedList<Contact>
     }
 
     override fun onBindViewHolder(holder: ContactViewHolder, position: Int) {
+        val currentContact = listContacts[position]
         val fullName = "${listContacts[position].firstName} ${listContacts[position].lastName}"
         holder.fullName.text = fullName
+        if(listContacts[position].favorite){
+            holder.iv_fav.background = ContextCompat.getDrawable(context,R.drawable.ic_star_filled_24)
+            holder.tv_fav.text = "Remove from favorite"
+        }else{
+            holder.iv_fav.background = ContextCompat.getDrawable(context,R.drawable.ic_star_24)
+            holder.tv_fav.text = "Add to favorite"
+        }
         holder.photo.also {
             val photoBitmap = listContacts[position].photo
             Glide.with(it.context).load(photoBitmap).into(it)
@@ -71,10 +83,10 @@ class ContactAdapter(val context: Context, var listContacts: LinkedList<Contact>
         val isExpanded = expandedItemPosition == position
         if (isExpanded) {
             holder.cardView.cardElevation = 10f
-            Animations.expand(holder.layoutExpanded,holder.phoneNumber)
+            Animations.expand(holder.layoutExpanded)
         } else {
             holder.cardView.cardElevation = 0f
-            Animations.collapse(holder.layoutExpanded,holder.phoneNumber)
+            Animations.collapse(holder.layoutExpanded/*,holder.phoneNumber*/)
         }
 
         holder.cardView.setOnClickListener {
@@ -94,15 +106,30 @@ class ContactAdapter(val context: Context, var listContacts: LinkedList<Contact>
         }
 
         holder.btn_call.setOnClickListener {
-
+            if(!hasCallPhonePermission()){
+                requestPermission()
+            }else{
+                performCall(listContacts[position].phone)
+            }
         }
 
         holder.btn_sendMsg.setOnClickListener {
-
+            val smsUri = Uri.parse("sms:${listContacts[position].phone}")
+            val intent = Intent(Intent.ACTION_SENDTO, smsUri)
+            it.context.startActivity(intent)
         }
 
+        val dbHelper = DbHelper(context)
         holder.btn_addToFavorite.setOnClickListener {
-
+            currentContact.favorite = !currentContact.favorite
+            dbHelper.updateFavorite(currentContact)
+            if(listContacts[position].favorite){
+                holder.iv_fav.background = ContextCompat.getDrawable(context,R.drawable.ic_star_filled_24)
+                holder.tv_fav.text = "Remove from favorite"
+            }else{
+                holder.iv_fav.background = ContextCompat.getDrawable(context,R.drawable.ic_star_24)
+                holder.tv_fav.text = "Add to favorite"
+            }
         }
 
         holder.photo.setOnClickListener { view ->
@@ -115,6 +142,7 @@ class ContactAdapter(val context: Context, var listContacts: LinkedList<Contact>
                 it.putExtra("address",listContacts[position].address)
                 it.putExtra("city",listContacts[position].city)
                 it.putExtra("favorite",listContacts[position].favorite)
+                it.putExtra("fromRecent","no")
                 context.startActivity(it)
                 (context as Activity).overridePendingTransition(
                     R.anim.slide_in_right,R.anim.slide_out_left
@@ -125,7 +153,25 @@ class ContactAdapter(val context: Context, var listContacts: LinkedList<Contact>
 
     }
 
+    private fun performCall(number:String) {
+        val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:$number"))
+        context.startActivity(intent)
+    }
+
+
     override fun getItemCount(): Int = listContacts.size
+
+    private fun hasCallPhonePermission():Boolean{
+        return ActivityCompat.checkSelfPermission(context,android.Manifest.permission.CALL_PHONE) ==
+                PackageManager.PERMISSION_GRANTED
+    }
+    private fun requestPermission() {
+        ActivityCompat.requestPermissions(
+            context as Activity,
+            arrayOf(android.Manifest.permission.CALL_PHONE), 101
+        )
+    }
+
 }
 
 

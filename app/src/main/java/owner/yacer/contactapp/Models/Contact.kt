@@ -11,5 +11,5 @@ data class Contact (
     val address :String? = null,
     val city:String? = null,
     var favorite:Boolean = false,
-    var addedAt:String
+    var addedAt:String =""
 )

@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_marginStart="5dp"
     android:layout_marginEnd="5dp"
+    android:layout_marginTop="3dp"
     app:cardCornerRadius="20dp"
     app:cardElevation="0dp"
     android:foreground="?attr/selectableItemBackground"
@@ -64,7 +65,7 @@
                     android:textColor="#B4000000"
                     android:fontFamily="@font/roboto_light"
                     android:textStyle="bold"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     />
 
             </LinearLayout>
@@ -141,12 +142,14 @@
                 android:background="?attr/selectableItemBackground"
                 >
                 <ImageView
+                    android:id="@+id/contact_iv_favorite"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@drawable/ic_star_24"
                     android:layout_marginStart="35dp"
                     />
                 <TextView
+                    android:id="@+id/contact_tv_favorite"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Add to favorite"

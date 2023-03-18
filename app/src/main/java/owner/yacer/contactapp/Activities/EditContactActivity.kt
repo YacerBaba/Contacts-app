@@ -45,14 +45,14 @@ class EditContactActivity : AppCompatActivity() {
             if (EditAct_et_contactCity.editText!!.text.toString().isNotEmpty()) {
                 city = EditAct_et_contactCity.editText!!.text.toString()
             }
-            val firstName = EditAct_et_contactFirstName.editText!!.text.toString()
-            val lastName = EditAct_et_contactLastName.editText!!.text.toString()
-            val phone = EditAct_et_contactPhone.editText!!.text.toString()
+            val firstName = EditAct_et_contactFirstName.editText!!.text.toString().trim()
+            val lastName = EditAct_et_contactLastName.editText!!.text.toString().trim()
+            val phone = EditAct_et_contactPhone.editText!!.text.toString().trim()
             val photo = if (imgBitmap != null) imgBitmap else contact.photo
 
             val editedContact = Contact(contact.id, firstName,
                 lastName, phone, photo, address, city,
-                addedAt = contact.addedAt
+                addedAt = contact.addedAt, favorite = contact.favorite
             )
             val success = dbHelper.editContact(contact = editedContact)
             if (success) {

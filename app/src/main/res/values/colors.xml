@@ -10,4 +10,6 @@
     <color name="black_grey">#2E2E2E</color>
     <color name="blue">#0466c8</color>
     <color name="grey_cardView">#0F2E2E2E</color>
+    <color name="blue_bg">#AE3B85CF</color>
+    <color name="bottom_color">#F7F7F8</color>
 </resources>
