@@ -52,75 +52,78 @@ class RecentFragment : Fragment(R.layout.fragment_recent) {
     lateinit var listRecent: LinkedList<RecentContact>
     private var lastDateDB = 0L
     lateinit var sharedPref: SharedPreferences
-    lateinit var progressBox: ProgressDialog
     lateinit var observer: RecyclerView.AdapterDataObserver
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        try {
+            spLast = requireContext().getSharedPreferences("lastPhoneCall", Context.MODE_PRIVATE)
+            dbHelper = DbHelper(requireContext())
 
-        spLast = requireContext().getSharedPreferences("lastPhoneCall", Context.MODE_PRIVATE)
-        progressBox = ProgressDialog(requireContext())
-        with(progressBox) {
-            setMessage("Loading Contacts ...")
-            setCancelable(false)
-        }
-        dbHelper = DbHelper(requireContext())
-
-        sharedPref = requireContext().getSharedPreferences("mySharedPref", Context.MODE_PRIVATE)
-        listRecent = LinkedList<RecentContact>()
-        progressBox.show()
-        Log.e("msgVisible", "${progressBox.isShowing}")
-        if (hasReadCallLogPermission()) {
-            CoroutineScope(Dispatchers.IO).launch {
-                getData()
-                Log.e("msg", "this will be first")
-                withContext(Dispatchers.Main) {
-                    setupRecentRv()
-                    if (!EnterAppFirstTime.observerInit) {
-                        contactObserver = ContactObserver(requireContext())
-                        requireActivity().contentResolver.registerContentObserver(
-                            CallLog.Calls.CONTENT_URI, true, contactObserver
-                        )
-                        EnterAppFirstTime.observerInit = true
+            sharedPref = requireContext().getSharedPreferences("mySharedPref", Context.MODE_PRIVATE)
+            listRecent = LinkedList<RecentContact>()
+            recent_progressBar.visibility = View.VISIBLE
+            if (hasReadCallLogPermission()) {
+                CoroutineScope(Dispatchers.IO).launch {
+                    try {
+                        getData()
+                    } catch (e: Exception) {
+                        Log.e("msg", e.message!!)
                     }
-                    progressBox.dismiss()
+                    Log.e("msg", "this will be first")
+                    withContext(Dispatchers.Main) {
+                        try {
+                            setupRecentRv()
+                            if (!EnterAppFirstTime.observerInit) {
+                                contactObserver = ContactObserver(requireContext())
+                                requireActivity().contentResolver.registerContentObserver(
+                                    CallLog.Calls.CONTENT_URI, true, contactObserver
+                                )
+                                EnterAppFirstTime.observerInit = true
+                            }
+                            recent_progressBar.visibility = View.GONE
+                        } catch (e: Exception) {
+                            Log.e("msg", e.message!!)
+                        }
+                    }
                 }
+            } else {
+                requestPermission()
+                recent_progressBar.visibility = View.GONE
             }
-        } else {
-            requestPermission()
-            progressBox.dismiss()
-        }
 
-        recent_searchView.setOnQueryTextListener(
-            object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String?): Boolean = true
+            recent_searchView.setOnQueryTextListener(
+                object : SearchView.OnQueryTextListener {
+                    override fun onQueryTextSubmit(query: String?): Boolean = true
 
-                override fun onQueryTextChange(newText: String?): Boolean {
-                    val number = newText!!.toString().toDoubleOrNull()
-                    val list = LinkedList<RecentContact>()
-                    if (number == null) {
-                        for (i in listRecent.indices) {
-                            if (listRecent[i].fullName.toString().lowercase()
-                                    .contains(newText.lowercase())
-                            ) {
-                                list.add(listRecent[i])
+                    override fun onQueryTextChange(newText: String?): Boolean {
+                        val number = newText!!.toString().toDoubleOrNull()
+                        val list = LinkedList<RecentContact>()
+                        if (number == null) {
+                            for (i in listRecent.indices) {
+                                if (listRecent[i].fullName.toString().lowercase()
+                                        .contains(newText.lowercase())
+                                ) {
+                                    list.add(listRecent[i])
+                                }
                             }
-                        }
-                        recentAdapter.setFilteredList(list)
-                    } else {
-                        for (i in listRecent.indices) {
-                            if (listRecent[i].phone!!.contains(newText)) {
-                                list.add(listRecent[i])
+                            recentAdapter.setFilteredList(list)
+                        } else {
+                            for (i in listRecent.indices) {
+                                if (listRecent[i].phone!!.contains(newText)) {
+                                    list.add(listRecent[i])
+                                }
                             }
+                            recentAdapter.setFilteredList(list)
                         }
-                        recentAdapter.setFilteredList(list)
+                        return true
                     }
-                    return true
-                }
 
-            })
-
+                })
+        } catch (e: Exception) {
+            Log.e("msg", e.message!!)
+        }
     }
 
 
@@ -246,7 +249,7 @@ class RecentFragment : Fragment(R.layout.fragment_recent) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 1 && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             // mark that the user gives us the permission to read the callLog
-            progressBox.show()
+            recent_progressBar.visibility = View.VISIBLE
             sharedPref.edit().apply {
                 putString("firstTime", "yes")
                 apply()
@@ -262,11 +265,15 @@ class RecentFragment : Fragment(R.layout.fragment_recent) {
                         )
                         EnterAppFirstTime.observerInit = true
                     }
-                    progressBox.dismiss()
+                    recent_progressBar.visibility = View.GONE
                 }
 
             }
         }
+    }
 
+    override fun onPause() {
+        super.onPause()
+        recent_progressBar.visibility = View.GONE
     }
 }

@@ -84,28 +84,33 @@ class ContactFragment : Fragment(R.layout.fragment_contact) {
 
     private fun setUpContactRecyclerView() {
         CoroutineScope(Dispatchers.IO).launch {
-            val listContacts: LinkedList<Contact>
-            val time = measureTimeMillis {
-                listContacts = dbHelper.getContacts()
-            }
-            Log.e("msgTimeContact", "$time")
-            withContext(Dispatchers.Main) {
-                adapter = ContactAdapter(requireContext(), listContacts)
-                layout_noContacts.visibility = if(adapter.itemCount ==0) View.VISIBLE else View.GONE
-                observer = object : RecyclerView.AdapterDataObserver(){
-                    override fun onChanged() {
-                        super.onChanged()
-                        val count = adapter.itemCount
-                        layout_noContacts.visibility = if(count ==0) View.VISIBLE else View.GONE
-                    }
+            try {
+                val listContacts: LinkedList<Contact>
+                val time = measureTimeMillis {
+                    listContacts = dbHelper.getContacts()
                 }
-                adapter.registerAdapterDataObserver(observer)
-                val layoutManager = LinearLayoutManager(requireContext())
-                main_rv_contacts.adapter = adapter
-                main_rv_contacts.layoutManager = layoutManager
+                Log.e("msgTimeContact", "$time")
+                withContext(Dispatchers.Main) {
+                    adapter = ContactAdapter(requireContext(), listContacts)
+                    layout_noContacts.visibility =
+                        if (adapter.itemCount == 0) View.VISIBLE else View.GONE
+                    observer = object : RecyclerView.AdapterDataObserver() {
+                        override fun onChanged() {
+                            super.onChanged()
+                            val count = adapter.itemCount
+                            layout_noContacts.visibility =
+                                if (count == 0) View.VISIBLE else View.GONE
+                        }
+                    }
+                    adapter.registerAdapterDataObserver(observer)
+                    val layoutManager = LinearLayoutManager(requireContext())
+                    main_rv_contacts.adapter = adapter
+                    main_rv_contacts.layoutManager = layoutManager
+                }
+            }catch (e:Exception){
+                Log.e("msgContacts",e.message!!)
             }
         }
-
 
     }
 
